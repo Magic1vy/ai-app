@@ -8,13 +8,24 @@ import { handleError } from "../utils";
 
 // CREATE
 export async function createUser(user: CreateUserParams) {
+  console.log("Trying to connect to database..."); // Логирование перед подключением к БД
+
   try {
     await connectToDatabase();
+    console.log("Connected to database successfully.");
+
+    console.log("Creating user with data:", user); // Логируем данные пользователя перед созданием
 
     const newUser = await User.create(user);
+    console.log("User created successfully:", newUser); // Логируем созданного пользователя
 
-    return JSON.parse(JSON.stringify(newUser));
+    // return JSON.parse(JSON.stringify(newUser));
+    return newUser.toObject();
+
+
   } catch (error) {
+    console.log("Error creating user:", error); // Логируем ошибку, если операция не удалась
+
     handleError(error);
   }
 }
